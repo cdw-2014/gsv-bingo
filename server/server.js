@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/suggestions', suggestionRoutes);
 app.use('/api/boards', boardRoutes);
 
-const uri = `mongodb+srv://cdw2014:gsvbingo52612@cluster0-wx2lp.mongodb.net/test`;
+const uri = `mongodb+srv://cdw2014:${process.env.DB_PASS}@cluster0-wx2lp.mongodb.net/test`;
 mongoose
 	.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => console.log('good'))
