@@ -1,11 +1,11 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
-var Schema = mongoose.Schema
+var Schema = mongoose.Schema;
 
 var boardSchema = new Schema({
-  title: { type: String, required: true },
-  type: { type: String, required: true },
-  pieces: { type: Schema.Types.Mixed, required: true }
-})
+	title  : { type: String, required: true },
+	type   : { type: String, required: true },
+	pieces : { type: Schema.Types.Mixed, required: true }
+});
 
-module.exports = mongoose.model('Board', boardSchema );
+module.exports = mongoose.model('Board', boardSchema);
