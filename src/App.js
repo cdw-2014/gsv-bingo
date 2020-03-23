@@ -5,17 +5,17 @@ import NavBar from './components/NavBar';
 import SuggestionForm from './components/SuggestionForm';
 
 function App() {
-  return (
-    <div className="App">
-      <NavBar />
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/suggest" component={SuggestionForm} />
-        </Switch>
-      </Router>
-    </div>
-  );
+	return (
+		<div className="App">
+			<NavBar />
+			<Router>
+				<Switch>
+					<Route exact path="/" component={Home} />
+					<Route exact path="/suggest" component={SuggestionForm} />
+				</Switch>
+			</Router>
+		</div>
+	);
 }
 
 export default App;
