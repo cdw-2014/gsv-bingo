@@ -1,57 +1,78 @@
 import React from 'react';
-import { Grid, Card, CardContent, CardActionArea, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Header from './Header';
+import MainFeaturedContent from './MainFeaturedContent';
+import HomeNavigationOption from './HomeNavigationOption';
 
 const useStyles = makeStyles((theme) => ({
-	root   : {
-		flexGrow : 1
-	},
-	button : {
-		marginRight : theme.spacing(2)
-	},
-	title  : {
-		flexGrow : 1
+	mainGrid : {
+		marginTop : theme.spacing(3)
 	}
 }));
+
+const sections = [
+	// { title: '1', url: '#' },
+	// { title: '2', url: '#' },
+	// { title: '3', url: '#' },
+	// { title: '4', url: '#' },
+	// { title: '5', url: '#' },
+	// { title: '6', url: '#' },
+	// { title: '7', url: '#' },
+	// { title: '8', url: '#' },
+	// { title: '9', url: '#' },
+	// { title: '0', url: '#' }
+];
+
+const mainFeaturedContent = {
+	title       : 'Welcome',
+	description : 'Choose an option below to get started',
+	image       : 'https://source.unsplash.com/random/?map',
+	imgText     : 'map image from unsplash.com'
+};
+
+const navigationOptions = [
+	{
+		title       : 'Suggestions',
+		description : 'Create and manage submitted game piece suggestions',
+		image       : `${process.env.PUBLIC_URL}/suggestion.jpg`,
+		imageText   : 'Image Text',
+		options     : [
+			{ title: 'Submit a New Suggestion', link: '/suggestions/submit' },
+			{ title: 'View All Suggested Pieces', link: '/suggestions/view' },
+			{ title: 'Manage Your Suggestions', link: '/suggestions/manage' }
+		]
+	},
+	{
+		title       : 'Game Board',
+		description : 'Create new or load existing bingo boards',
+		image       : `${process.env.PUBLIC_URL}/map.jpg`,
+		imageText   : 'Image Text',
+		options     : [
+			{ title: 'Create a New Board', link: '/boards/create' },
+			{ title: 'View All Boards', link: '/boards/view' },
+			{ title: 'Manage Your Boards', link: '/boards/manage' }
+		]
+	}
+];
 
 export default function Home() {
 	const classes = useStyles();
 
 	return (
-		<div className={classes.root}>
-			<Grid
-				container
-				direction="row"
-				justify="center"
-				alignItems="center"
-				spacing={3}
-				style={{ marginTop: '15px' }}
-			>
-				<Grid item xs={5}>
-					<Card>
-						<CardActionArea onClick={() => (window.location.href = '/suggest')}>
-							<CardContent>
-								<Typography variant="h5">Make A Suggestion</Typography>
-								<Typography variant="body1" color="textSecondary">
-									Add an item that will be used to generate a Google Street View Board.
-								</Typography>
-							</CardContent>
-						</CardActionArea>
-					</Card>
-				</Grid>
-				<Grid item xs={5}>
-					<Card>
-						<CardActionArea onClick={() => (window.location.href = '/createboard')}>
-							<CardContent>
-								<Typography variant="h5">Create a Board</Typography>
-								<Typography variant="body1" color="textSecondary">
-									Generate a random bingo board from user created suggestions.
-								</Typography>
-							</CardContent>
-						</CardActionArea>
-					</Card>
-				</Grid>
-			</Grid>
-		</div>
+		<React.Fragment>
+			<CssBaseline />
+			<Container maxWidth="lg">
+				{/* <Header title="Google Street View Bingo" sections={sections} /> */}
+				<main>
+					<MainFeaturedContent post={mainFeaturedContent} />
+					<Grid container spacing={4}>
+						{navigationOptions.map((post) => <HomeNavigationOption key={post.title} post={post} />)}
+					</Grid>
+				</main>
+			</Container>
+		</React.Fragment>
 	);
 }
