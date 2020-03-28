@@ -19,7 +19,8 @@ export default function CreateBoardForm() {
 		setState
 	] = React.useState({
 		type        : 'bingo',
-		isFreeSpace : true
+		isFreeSpace : true,
+		title       : ''
 	});
 
 	const handleChange = (event) => {
@@ -30,9 +31,12 @@ export default function CreateBoardForm() {
 		setState({ ...state, isFreeSpace: !state.isFreeSpace });
 	};
 
+	const handleType = (event) => {
+		setState({ ...state, title: event.target.value });
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log('submit');
 		let typeName, numPieces;
 		if (state.type === 'bingo') {
 			if (state.isFreeSpace) {
@@ -48,15 +52,23 @@ export default function CreateBoardForm() {
 		}
 		let pieces = [];
 		axios
-			.get('http://localhost:3001/api/suggestions/random/35')
+			.get(`http://localhost:3001/api/suggestions/random/${numPieces}`)
 			.then((data) => {
 				data.data.forEach((item) => pieces.push(item[0]));
 			})
-			.then((data) => console.log(pieces));
-		// axios.post('http://localhost:3001/api/suggestions', {
-		// 	title : event.target[0].value,
-		// 	type  : typeName
-		// });
+			.then((data) => {
+				if (pieces.length !== numPieces) {
+					alert('There was a problem creating the board. Please try again.');
+				} else {
+					axios
+						.post('http://localhost:3001/api/boards', {
+							title  : state.title,
+							type   : typeName,
+							pieces : pieces
+						})
+						.then((data) => console.log('DONE.'));
+				}
+			});
 	};
 
 	return (
@@ -78,7 +90,13 @@ export default function CreateBoardForm() {
 				<form className={classes.root} autoComplete="off" onSubmit={(e) => handleSubmit(e)}>
 					<div>
 						<Grid item>
-							<TextField required id="name" label="Board Name" />
+							<TextField
+								required
+								id="name"
+								label="Board Name"
+								value={state.title}
+								onChange={(e) => handleType(e)}
+							/>
 						</Grid>
 						<Grid item>
 							<FormControl component="fieldset" name="board-type">
@@ -95,8 +113,7 @@ export default function CreateBoardForm() {
 							<FormControl onChange={(e) => handleCheck(e)} disabled={state.type === 'list'}>
 								<FormControlLabel
 									label="Use free space in center"
-									value={state.isFreeSpace}
-									control={<Checkbox />}
+									control={<Checkbox checked={state.isFreeSpace} />}
 								/>
 							</FormControl>
 						</Grid>

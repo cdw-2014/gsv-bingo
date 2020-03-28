@@ -20,7 +20,6 @@ router.get('/random/:num', async (req, res) => {
 	for (let i = 0; i < num; i++) {
 		let index = indices[Math.floor(Math.random() * indices.length)];
 		indices = indices.filter((x) => x !== index);
-		console.log('\n', indices, index);
 		items.push(await getAtIndex(index));
 	}
 	res.json(items);
@@ -33,7 +32,6 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	console.log('called');
 	let { name, suggestion, difficulty } = req.body;
 	Suggestion.create({
 		name       : name,

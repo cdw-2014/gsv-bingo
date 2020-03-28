@@ -13,6 +13,15 @@ router.get('/:id', (req, res) => {
 	});
 });
 
+router.post('/', (req, res) => {
+	let { title, type, pieces } = req.body;
+	Board.create({
+		title  : title,
+		type   : type,
+		pieces : pieces
+	});
+});
+
 router.put('/id=:id', (req, res) => {
 	const id = req.params.id;
 	Board.updateOne(
