@@ -20,7 +20,8 @@ export default function CreateBoardForm() {
 	] = React.useState({
 		type        : 'bingo',
 		isFreeSpace : true,
-		title       : ''
+		title       : '',
+		id          : null
 	});
 
 	const handleChange = (event) => {
@@ -35,8 +36,15 @@ export default function CreateBoardForm() {
 		setState({ ...state, title: event.target.value });
 	};
 
+	const redirect = (id) => {
+		console.log('test', id);
+		window.location.href = `/board/play/${id}`;
+		return false;
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
+		console.log(state);
 		let typeName, numPieces;
 		if (state.type === 'bingo') {
 			if (state.isFreeSpace) {
@@ -66,7 +74,7 @@ export default function CreateBoardForm() {
 							type   : typeName,
 							pieces : pieces
 						})
-						.then((data) => console.log('DONE.'));
+						.then((data) => (window.location.href = `/boards/play/${data}`));
 				}
 			});
 	};

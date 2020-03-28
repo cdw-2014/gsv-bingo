@@ -15,11 +15,16 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
 	let { title, type, pieces } = req.body;
-	Board.create({
-		title  : title,
-		type   : type,
-		pieces : pieces
-	});
+	let b = Board.create(
+		{
+			title  : title,
+			type   : type,
+			pieces : pieces
+		},
+		(err, item) => {
+			res.send(item._id);
+		}
+	);
 });
 
 router.put('/id=:id', (req, res) => {
