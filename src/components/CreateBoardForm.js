@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Grid, Button, FormControl, FormControlLabel, RadioGroup, Radio, Checkbox } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 const axios = require('axios');
 
@@ -14,81 +14,100 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreateBoardForm() {
 	const classes = useStyles();
-	// const [
-	// 	amount,
-	// 	setAmount
-	// ] = React.useState(1);
+	const [
+		state,
+		setState
+	] = React.useState({
+		type        : 'bingo',
+		isFreeSpace : true
+	});
 
-	// const handleChange = (event) => {
-	// 	setAmount(event.target.value);
-	// };
+	const handleChange = (event) => {
+		setState({ ...state, type: event.target.value });
+	};
 
-	/*TODO: Check DB for exact copy/similar suggestions
-          Check suggestion for inappropriate language
-  */
+	const handleCheck = (event) => {
+		setState({ ...state, isFreeSpace: !state.isFreeSpace });
+	};
+
 	const handleSubmit = (event) => {
-		// event.preventDefault();
-		console.log(event.target[1].value, event.target[0].value);
-		axios.post('http://localhost:3001/api/suggestions', {
-			name       : event.target[1].value,
-			suggestion : event.target[0].value
-		});
+		event.preventDefault();
+		console.log('submit');
+		let typeName, numPieces;
+		if (state.type === 'bingo') {
+			if (state.isFreeSpace) {
+				typeName = 'bingo_f';
+				numPieces = 24;
+			} else {
+				typeName = 'bingo_nf';
+				numPieces = 25;
+			}
+		} else {
+			typeName = 'list';
+			numPieces = 10;
+		}
+		let pieces = [];
+		axios
+			.get('http://localhost:3001/api/suggestions/random/35')
+			.then((data) => {
+				data.data.forEach((item) => pieces.push(item[0]));
+			})
+			.then((data) => console.log(pieces));
+		// axios.post('http://localhost:3001/api/suggestions', {
+		// 	title : event.target[0].value,
+		// 	type  : typeName
+		// });
 	};
 
 	return (
 		<Grid
 			container
+			item
+			xs={12}
 			direction="column"
-			justify="center"
+			justify="space-between"
 			alignItems="center"
 			spacing={2}
 			style={{ marginTop: '15px' }}
+			className={classes.root}
 		>
-			<Grid item xs={8}>
-				<h3>Add a Bingo Piece</h3>
-				<p>
-					Fill out the form to create a possible bingo piece that others can look for when playing Google
-					Steet View Bingo!
-				</p>
+			<Grid item xs={12}>
+				<h3>Create a Bingo Board</h3>
 			</Grid>
-			<form className={classes.root} autoComplete="off" onSubmit={(e) => handleSubmit(e)}>
-				<div>
-					<Grid container alignItems="center" justify="center" direction="column" spacing={3}>
+			<Grid item>
+				<form className={classes.root} autoComplete="off" onSubmit={(e) => handleSubmit(e)}>
+					<div>
 						<Grid item>
-							<TextField
-								required
-								id="suggestion"
-								label="Required"
-								placeholder="Suggestion"
-								fullWidth={true}
-							/>
-						</Grid>
-						{/* <Grid item>
-                <TextField
-                  id="select-amount"
-                  select
-                  label="How many need to be found?"
-                  value={amount}
-                  onChange={handleChange}
-                >
-                  {[1,2,3,4,5,6,7,8,9,10].map(option => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid> */}
-						<Grid item>
-							<TextField id="name" label="Your Name" />
+							<TextField required id="name" label="Board Name" />
 						</Grid>
 						<Grid item>
-							<Button variant="contained" type="submit" color="primary" id="submit">
-								Submit
-							</Button>
+							<FormControl component="fieldset" name="board-type">
+								<RadioGroup onChange={(e) => handleChange(e)} value={state.type}>
+									<FormControlLabel value="bingo" control={<Radio />} label="Bingo Board (5x5)" />
+									<FormControlLabel value="list" control={<Radio />} label="List of 10 Items" />
+								</RadioGroup>
+							</FormControl>
 						</Grid>
+						<Grid item>
+							<h5>Additional Settings:</h5>
+						</Grid>
+						<Grid item>
+							<FormControl onChange={(e) => handleCheck(e)} disabled={state.type === 'list'}>
+								<FormControlLabel
+									label="Use free space in center"
+									value={state.isFreeSpace}
+									control={<Checkbox />}
+								/>
+							</FormControl>
+						</Grid>
+					</div>
+					<Grid item>
+						<Button variant="contained" type="submit" color="primary" id="submit">
+							Submit
+						</Button>
 					</Grid>
-				</div>
-			</form>
+				</form>
+			</Grid>
 		</Grid>
 	);
 }

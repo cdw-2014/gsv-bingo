@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Grid, Button, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 const axios = require('axios');
 
@@ -14,14 +14,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SuggestionForm() {
 	const classes = useStyles();
-	// const [
-	// 	amount,
-	// 	setAmount
-	// ] = React.useState(1);
+	const [
+		amount,
+		setAmount
+	] = React.useState('Unknown');
 
-	// const handleChange = (event) => {
-	// 	setAmount(event.target.value);
-	// };
+	const handleChange = (event) => {
+		setAmount(event.target.value);
+	};
 
 	/*TODO: Check DB for exact copy/similar suggestions
           Check suggestion for inappropriate language
@@ -30,7 +30,8 @@ export default function SuggestionForm() {
 		// event.preventDefault();
 		console.log(event.target[1].value, event.target[0].value);
 		axios.post('http://localhost:3001/api/suggestions', {
-			name       : event.target[1].value,
+			name       : event.target[2].value,
+			difficulty : event.target[1].value,
 			suggestion : event.target[0].value
 		});
 	};
@@ -55,29 +56,28 @@ export default function SuggestionForm() {
 				<div>
 					<Grid container alignItems="center" justify="center" direction="column" spacing={3}>
 						<Grid item>
-							<TextField
-								required
-								id="suggestion"
-								label="Required"
-								placeholder="Suggestion"
-								fullWidth={true}
-							/>
+							<TextField required id="suggestion" label="Required" placeholder="Suggestion" />
 						</Grid>
-						{/* <Grid item>
-                <TextField
-                  id="select-amount"
-                  select
-                  label="How many need to be found?"
-                  value={amount}
-                  onChange={handleChange}
-                >
-                  {[1,2,3,4,5,6,7,8,9,10].map(option => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid> */}
+						<Grid item>
+							<TextField
+								id="select-amount"
+								select
+								value={amount}
+								helperText="About how long will it take to find?"
+								onChange={handleChange}
+							>
+								{[
+									{ text: 'Unknown', id: 0 },
+									{ text: 'Easy (1-2 minutes)', id: 1 },
+									{ text: 'Fair (3-5 minutes)', id: 2 },
+									{ text: 'Hard (Over 5 minutes)', id: 3 }
+								].map((option) => (
+									<MenuItem key={option.id} value={option.id}>
+										{option.text}
+									</MenuItem>
+								))}
+							</TextField>
+						</Grid>
 						<Grid item>
 							<TextField id="name" label="Your Name" />
 						</Grid>
