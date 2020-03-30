@@ -15,7 +15,11 @@ export default function ListBoard(props) {
 		setState
 	] = React.useState();
 
-	return <Grid container xs={12} justify="center" alignItems="center" direction="row" />;
+	return (
+		<Grid container xs={12} justify="center" alignItems="center" direction="row">
+			<p>test</p>
+		</Grid>
+	);
 }
 
 ListBoard.propTypes = {
