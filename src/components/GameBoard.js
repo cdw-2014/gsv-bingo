@@ -7,12 +7,12 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 
 export default function GameBoard(props) {
-	const { gameId } = props;
-
+	const { gameId } = props.match.params;
+	console.log('gameid', gameId);
 	return (
 		<React.Fragment>
 			<h1>gameId</h1>
-			<p>board will go here</p>
+			<p>{gameId}</p>
 		</React.Fragment>
 	);
 }

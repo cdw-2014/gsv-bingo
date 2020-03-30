@@ -74,7 +74,7 @@ export default function CreateBoardForm() {
 							type   : typeName,
 							pieces : pieces
 						})
-						.then((data) => (window.location.href = `/boards/play/${data}`));
+						.then((data) => (window.location.href = `/boards/play/${data.data}`));
 				}
 			});
 	};
