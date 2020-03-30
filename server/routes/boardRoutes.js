@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-	Board.find({ id: req.params.id }).then((board) => {
+	Board.find({ _id: req.params.id }).then((board) => {
 		res.json(board);
 	});
 });
