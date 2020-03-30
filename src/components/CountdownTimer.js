@@ -9,6 +9,7 @@ export default function CountdownTimer(props) {
 			<h1>
 				{('0' + minutes).slice(-2)}:{('0' + seconds).slice(-2)}
 			</h1>
+			{minutes === 0 && seconds === 0 ? alert('Time is up!') : null}
 		</div>
 	);
 }

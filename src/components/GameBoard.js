@@ -17,45 +17,62 @@ export default function GameBoard(props) {
 		state,
 		setState
 	] = React.useState({
-		board       : null,
-		didMount    : false,
-		isPlaying   : false,
-		timeStarted : new Date().getTime()
+		board    : null,
+		didMount : false
 	});
 	const [
 		timeLeft,
 		setTimeLeft
 	] = React.useState({
-		minutes : 20,
-		seconds : 0
+		timeStarted : new Date().getTime(),
+		isPlaying   : false,
+		minutes     : 20,
+		seconds     : 0
 	});
 
-	React.useEffect(() => {
-		axios
-			.get(`http://localhost:3001/api/boards/${gameId}`)
-			.then((data) => data.data)
-			.then((board) => {
-				setState({ ...state, board: board, didMount: true });
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-		setInterval(() => {
-			const timer = updateTime();
-			setTimeLeft({ minutes: timer.minutes, seconds: timer.seconds });
-		}, 1000);
-	}, []);
+	React.useEffect(
+		() => {
+			axios
+				.get(`http://localhost:3001/api/boards/${gameId}`)
+				.then((data) => data.data)
+				.then((board) => {
+					setState({ ...state, board: board, didMount: true });
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+			let timerInterval = null;
+			timerInterval = setTimeout(() => {
+				if (timeLeft.isPlaying && (timeLeft.minutes > 0 || timeLeft.seconds > 0)) {
+					const timer = updateTime();
+					setTimeLeft({ ...timeLeft, minutes: timer.minutes, seconds: timer.seconds });
+				}
+			}, 1000);
+			return () => clearInterval(timerInterval);
+		},
+		[
+			timeLeft
+		]
+	);
 
 	const updateTime = () => {
 		const currentTime = new Date().getTime();
-		const difference = currentTime - state.timeStarted;
-		const minutesPassed = Math.floor(difference / 60000);
-		const secondsPassed = Math.floor((difference % 60000) / 1000);
-		return { minutes: 19 - minutesPassed, seconds: 59 - secondsPassed };
+		const difference = (currentTime - timeLeft.timeStarted) / 1000;
+		const minutesPassed = Math.floor((difference - 1) / 60);
+		const secondsPassed = Math.floor(difference - minutesPassed * 60);
+		return { minutes: 19 - minutesPassed, seconds: 60 - secondsPassed };
+	};
+
+	const handleClick = (event) => {
+		if (timeLeft.isPlaying) {
+			setTimeLeft({ ...timeLeft, isPlaying: false });
+		} else {
+			setTimeLeft({ ...timeLeft, isPlaying: true, timeStarted: new Date().getTime() });
+		}
 	};
 
 	return (
-		<Grid container xs={12} justify="center" alignItems="center" direction="row">
+		<Grid container xs={12} justify="center" alignItems="center" direction="column" spacing={3}>
 			{state.didMount &&
 			state.board.type in
 				[
@@ -66,14 +83,14 @@ export default function GameBoard(props) {
 			) : (
 				<ListBoard board={state.board} />
 			)}
+			{timeLeft.isPlaying ? <CountdownTimer minutes={timeLeft.minutes} seconds={timeLeft.seconds} /> : null}
 			<Button
 				variant="contained"
 				color={state.isPlaying === true ? 'secondary' : 'primary'}
-				onClick={(e) => setState({ ...state, isPlaying: !state.isPlaying })}
+				onClick={(e) => handleClick(e)}
 			>
-				{state.isPlaying === true ? 'Finished' : 'Start'}
+				{timeLeft.isPlaying === true ? 'Finished' : 'Start'}
 			</Button>
-			<CountdownTimer minutes={timeLeft.minutes} seconds={timeLeft.seconds} />
 		</Grid>
 	);
 }
