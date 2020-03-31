@@ -1,24 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import axios from 'axios';
+import { Card, CardActionArea } from '@material-ui/core';
 
 const useStyles = makeStyles({
 	card : {
-		display  : 'flex',
-		width    : '15%',
-		height   : '8ch',
-		flexWrap : 1
+		display   : 'flex',
+		width     : '35%',
+		height    : '30px',
+		marginTop : '5px'
 	}
 });
 
 export default function ListBoard(props) {
-	const { _id, title, type, suggestion } = props;
+	const { title } = props;
 	const classes = useStyles();
 	const [
 		state,
@@ -43,23 +38,19 @@ export default function ListBoard(props) {
 	};
 
 	const renderListItem = (piece, i) => {
-		if (i % 2 === 0) {
-			return (
-				<Grid container item xs={10} justify="space-around" alignItems="center" direction="row" spaing={2}>
-					<p>test</p>
-				</Grid>
-			);
-		}
+		return (
+			<Card key={piece._id} className={classes.card} style={{ backgroundColor: piece.found ? 'green' : 'white' }}>
+				<CardActionArea onClick={(e) => updatePieces(i)}>{piece.suggestion}</CardActionArea>
+			</Card>
+		);
 	};
 
 	return (
 		<React.Fragment>
-			<h3>{props.title}</h3>
-			{state.didMount && state.pieces.map((piece, i) => renderListItem(piece, i))}
+			<Grid container item xs={10} justify="space-around" alignItems="center" direction="column" spacing={2}>
+				<h3>{props.title}</h3>
+				{state.didMount && state.pieces.map((piece, i) => renderListItem(piece, i))}
+			</Grid>
 		</React.Fragment>
 	);
 }
-
-// ListBoard.propTypes = {
-// 	board : PropTypes.object
-// };
