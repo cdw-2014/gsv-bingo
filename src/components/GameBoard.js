@@ -44,16 +44,14 @@ export default function GameBoard(props) {
 
 	return (
 		<Grid container xs={12} justify="center" alignItems="center" direction="column" spacing={3}>
-			{state.didMount && console.log(state.board)}
 			{state.didMount &&
-			state.board.type in
-				[
-					'bingo_f',
-					'bingo_nf'
-				] ? (
-				<BingoBoard board={state.board} />
+			[
+				'bingo_f',
+				'bingo_nf'
+			].includes(state.board.type) ? (
+				<BingoBoard {...state.board} />
 			) : (
-				<ListBoard board={state.board} />
+				<ListBoard {...state.board} />
 			)}
 			<CountdownTimer />
 		</Grid>

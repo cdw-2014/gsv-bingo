@@ -9,7 +9,6 @@ import Link from '@material-ui/core/Link';
 import axios from 'axios';
 
 export default function ListBoard(props) {
-	const { board } = props;
 	const [
 		state,
 		setState
@@ -17,11 +16,11 @@ export default function ListBoard(props) {
 
 	return (
 		<Grid container xs={12} justify="center" alignItems="center" direction="row">
-			<p>test</p>
+			<p>{props.title}</p>
 		</Grid>
 	);
 }
 
-ListBoard.propTypes = {
-	board : PropTypes.object
-};
+// ListBoard.propTypes = {
+// 	board : PropTypes.object
+// };
