@@ -43,13 +43,13 @@ export default function GameBoard(props) {
 	}, []);
 
 	return (
-		<Grid container xs={12} justify="center" alignItems="center" direction="column" spacing={3}>
+		<Grid container xs={12} justify="center" alignItems="center" direction="column" spacing={2}>
 			{state.didMount &&
 			[
 				'bingo_f',
 				'bingo_nf'
 			].includes(state.board.type) ? (
-				<BingoBoard {...state.board} />
+				<BingoBoard {...state.board} onClick={(e) => console.log('clicked')} />
 			) : (
 				<ListBoard {...state.board} />
 			)}

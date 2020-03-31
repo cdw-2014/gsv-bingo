@@ -7,13 +7,14 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import axios from 'axios';
-import { Card } from '@material-ui/core';
+import { Card, CardActionArea } from '@material-ui/core';
 
 const useStyles = makeStyles({
 	card        : {
-		display : 'flex',
-		width   : '15%',
-		height  : '8ch'
+		display  : 'flex',
+		width    : '15%',
+		height   : '8ch',
+		flexWrap : 1
 	},
 	cardDetails : {
 		flex : 1
@@ -24,29 +25,49 @@ const useStyles = makeStyles({
 });
 
 export default function BingoBoard(props) {
-	const { _id, title, type, suggestion, pieces } = props;
+	const { _id, title, type, suggestion } = props;
 	const classes = useStyles();
 	const [
 		state,
 		setState
 	] = React.useState({
-		didMount : false
+		didMount : false,
+		pieces   : props.pieces
 	});
 
 	React.useEffect(() => {
+		state.pieces.forEach((piece) => (piece.found = false));
 		if (type === 'bingo_f') {
-			pieces.splice(12, 0, { suggestion: 'FREE SPACE' });
+			state.pieces.splice(12, 0, { suggestion: 'FREE SPACE', found: true });
 		}
-		pieces.forEach((piece) => (piece.found = false));
+
 		setState({ ...state, didMount: true });
 	}, []);
 
+	const updatePieces = (i) => {
+		let updatedPieces = [
+			...state.pieces
+		];
+		let pieceToUpdate = updatedPieces[i];
+		pieceToUpdate.found = !pieceToUpdate.found;
+		setState({ ...state, pieces: updatedPieces });
+	};
+
 	const renderBingoRow = (rowNum) => {
-		let rowPieces = pieces.slice((rowNum - 1) * 5, rowNum * 5);
 		return (
-			<Grid container item xs={10} justify="space-around" alignItems="center" direction="row" spaing={3}>
-				{rowPieces.map((piece) => {
-					return <Card className={classes.card}>{piece.suggestion}</Card>;
+			<Grid container item xs={10} justify="space-around" alignItems="center" direction="row" spaing={2}>
+				{state.pieces.map((piece, i) => {
+					if (i >= (rowNum - 1) * 5 && i < rowNum * 5) {
+						return (
+							<Card
+								key={piece._id}
+								className={classes.card}
+								style={{ backgroundColor: piece.found ? 'green' : 'white' }}
+							>
+								<CardActionArea onClick={(e) => updatePieces(i)}>{piece.suggestion}</CardActionArea>
+							</Card>
+						);
+					}
 				})}
 			</Grid>
 		);
