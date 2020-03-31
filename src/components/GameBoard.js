@@ -15,22 +15,25 @@ export default function GameBoard(props) {
 		board    : null,
 		didMount : false
 	});
-	const [
-		timeLeft,
-		setTimeLeft
-	] = React.useState({
-		timeStarted : new Date().getTime(),
-		isPlaying   : false,
-		minutes     : 20,
-		seconds     : 0
-	});
 
 	React.useEffect(() => {
 		axios
 			.get(`http://localhost:3001/api/boards/${gameId}`)
 			.then((data) => data.data[0])
 			.then((board) => {
-				setState({ ...state, board: board, didMount: true });
+				let idsToString = '';
+				board.pieces.forEach((id) => (idsToString += id + ','));
+				idsToString = idsToString.substr(0, idsToString.length - 1);
+				axios.get(`http://localhost:3001/api/suggestions/many/${idsToString}`).then((data) => {
+					const pieces = data.data;
+					const res = {
+						_id    : board._id,
+						type   : board.type,
+						title  : board.title,
+						pieces : pieces
+					};
+					setState({ ...state, board: res, didMount: true });
+				});
 			})
 			.catch((err) => {
 				console.error(err);
@@ -39,14 +42,10 @@ export default function GameBoard(props) {
 
 	return (
 		<Grid container item xs={12} justify="center" alignItems="center" direction="column" spacing={2}>
-			{state.didMount &&
-			[
-				'bingo_f',
-				'bingo_nf'
-			].includes(state.board.type) ? (
-				<BingoBoard {...state.board} />
+			{state.didMount && console.log(state.board) && state.board.type === 'list' ? (
+				<ListBoard {...state.board} />
 			) : (
-				state.didMount && <ListBoard {...state.board} />
+				state.didMount && <BingoBoard {...state.board} />
 			)}
 			<CountdownTimer />
 		</Grid>

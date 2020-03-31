@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 });
 
 const getAtIndex = async (index) => {
-	return await Suggestion.find().sort({ _id: 1 }).limit(1).skip(index);
+	return await Suggestion.find({}, { _id: 1 }).sort({ _id: 1 }).limit(1).skip(index);
 };
 
 router.get('/random/:num', async (req, res) => {
@@ -22,12 +22,22 @@ router.get('/random/:num', async (req, res) => {
 		indices = indices.filter((x) => x !== index);
 		items.push(await getAtIndex(index));
 	}
+	console.log(items);
 	res.json(items);
 });
 
 router.get('/:id', (req, res) => {
-	Suggestion.find({ id: req.params.id }).then((suggestion) => {
+	Suggestion.find({ _id: req.params.id }).then((suggestion) => {
 		res.json(suggestion);
+	});
+});
+
+router.get('/many/:ids', (req, res) => {
+	let { ids } = req.params;
+	let checkList = ids.split(',');
+	Suggestion.find({ _id: { $in: checkList } }).then((suggestions) => {
+		console.log(suggestions);
+		res.json(suggestions);
 	});
 });
 

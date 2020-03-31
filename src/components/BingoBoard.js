@@ -24,6 +24,7 @@ export default function BingoBoard(props) {
 	});
 
 	React.useEffect(() => {
+		console.log(state.pieces);
 		state.pieces.forEach((piece) => (piece.found = false));
 		if (type === 'bingo_f') {
 			state.pieces.splice(12, 0, { suggestion: 'FREE SPACE', found: true });

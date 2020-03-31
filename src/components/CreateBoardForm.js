@@ -44,7 +44,6 @@ export default function CreateBoardForm() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(state);
 		let typeName, numPieces;
 		if (state.type === 'bingo') {
 			if (state.isFreeSpace) {
@@ -62,7 +61,7 @@ export default function CreateBoardForm() {
 		axios
 			.get(`http://localhost:3001/api/suggestions/random/${numPieces}`)
 			.then((data) => {
-				data.data.forEach((item) => pieces.push(item[0]));
+				data.data.forEach((item) => pieces.push(item[0]._id));
 			})
 			.then((data) => {
 				if (pieces.length !== numPieces) {
