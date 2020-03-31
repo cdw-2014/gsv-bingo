@@ -10,17 +10,11 @@ import axios from 'axios';
 import { Card, CardActionArea } from '@material-ui/core';
 
 const useStyles = makeStyles({
-	card        : {
+	card : {
 		display  : 'flex',
 		width    : '15%',
 		height   : '8ch',
 		flexWrap : 1
-	},
-	cardDetails : {
-		flex : 1
-	},
-	cardMedia   : {
-		width : 160
 	}
 });
 
@@ -40,7 +34,6 @@ export default function BingoBoard(props) {
 		if (type === 'bingo_f') {
 			state.pieces.splice(12, 0, { suggestion: 'FREE SPACE', found: true });
 		}
-
 		setState({ ...state, didMount: true });
 	}, []);
 
@@ -55,7 +48,16 @@ export default function BingoBoard(props) {
 
 	const renderBingoRow = (rowNum) => {
 		return (
-			<Grid container item xs={10} justify="space-around" alignItems="center" direction="row" spaing={2}>
+			<Grid
+				container
+				item
+				xs={10}
+				justify="space-around"
+				alignItems="center"
+				direction="row"
+				spaing={2}
+				key={rowNum}
+			>
 				{state.pieces.map((piece, i) => {
 					if (i >= (rowNum - 1) * 5 && i < rowNum * 5) {
 						return (

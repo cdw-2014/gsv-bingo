@@ -18,7 +18,11 @@ export default function CountdownTimer(props) {
 			let timerInterval = null;
 			timerInterval = setTimeout(() => {
 				if (timeLeft.isPlaying && (timeLeft.minutes > 0 || timeLeft.seconds > 0)) {
-					const timer = updateTime();
+					const currentTime = new Date().getTime();
+					const difference = (currentTime - timeLeft.timeStarted) / 1000;
+					const minutesPassed = Math.floor((difference - 1) / 60);
+					const secondsPassed = Math.floor(difference - minutesPassed * 60);
+					const timer = { minutes: 19 - minutesPassed, seconds: 60 - secondsPassed };
 					setTimeLeft({ ...timeLeft, minutes: timer.minutes, seconds: timer.seconds });
 				}
 			}, 1000);
@@ -29,13 +33,13 @@ export default function CountdownTimer(props) {
 		]
 	);
 
-	const updateTime = () => {
-		const currentTime = new Date().getTime();
-		const difference = (currentTime - timeLeft.timeStarted) / 1000;
-		const minutesPassed = Math.floor((difference - 1) / 60);
-		const secondsPassed = Math.floor(difference - minutesPassed * 60);
-		return { minutes: 19 - minutesPassed, seconds: 60 - secondsPassed };
-	};
+	// const updateTime = () => {
+	// 	const currentTime = new Date().getTime();
+	// 	const difference = (currentTime - timeLeft.timeStarted) / 1000;
+	// 	const minutesPassed = Math.floor((difference - 1) / 60);
+	// 	const secondsPassed = Math.floor(difference - minutesPassed * 60);
+	// 	return { minutes: 19 - minutesPassed, seconds: 60 - secondsPassed };
+	// };
 
 	const handleClick = (event) => {
 		if (timeLeft.isPlaying) {
