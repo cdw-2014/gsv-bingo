@@ -4,6 +4,8 @@ import NewHome from './components/Home';
 import NavBar from './components/NavBar';
 import SuggestionForm from './components/SuggestionForm';
 import Header from './components/Header';
+import CreateBoardForm from './components/CreateBoardForm';
+import GameBoard from './components/GameBoard';
 
 const sections = [
 	// { title: '1', url: '#' },
@@ -26,6 +28,8 @@ function App() {
 				<Switch>
 					<Route exact path="/" component={NewHome} />
 					<Route exact path="/suggestions/submit" component={SuggestionForm} />
+					<Route exact path="/boards/create" component={CreateBoardForm} />
+					<Route path="/boards/play/:gameId" component={GameBoard} />
 				</Switch>
 			</Router>
 		</div>

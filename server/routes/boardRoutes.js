@@ -8,9 +8,23 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-	Board.find({ id: req.params.id }).then((board) => {
+	Board.find({ _id: req.params.id }).then((board) => {
 		res.json(board);
 	});
+});
+
+router.post('/', (req, res) => {
+	let { title, type, pieces } = req.body;
+	let b = Board.create(
+		{
+			title  : title,
+			type   : type,
+			pieces : pieces
+		},
+		(err, item) => {
+			res.send(item._id);
+		}
+	);
 });
 
 router.put('/id=:id', (req, res) => {
