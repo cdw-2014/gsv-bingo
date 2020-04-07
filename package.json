@@ -19,8 +19,10 @@
 		"react-scripts": "3.4.0"
 	},
 	"scripts": {
-		"start": "node server/server.js",
-		"build": "react-scripts build",
+		"start": "nodemon server/server.js",
+		"build": "cd src && npm run build",
+		"install-client": "cd src && npm install",
+		"heroku-postbuild": "npm run install-client && npm run build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"dev": "concurrently \"npm start\" \"nodemon server/server.js\""

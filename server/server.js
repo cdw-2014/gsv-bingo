@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const suggestionRoutes = require('./routes/suggestionRoutes');
@@ -14,7 +15,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, 'build')));
 app.use('/api/suggestions', suggestionRoutes);
 app.use('/api/boards', boardRoutes);
 
@@ -23,5 +23,9 @@ mongoose
 	.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => console.log('good'))
 	.catch((err) => console.error(err));
+
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, 'src/build')));
+}
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
