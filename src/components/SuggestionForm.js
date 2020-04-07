@@ -29,7 +29,7 @@ export default function SuggestionForm() {
 	const handleSubmit = (event) => {
 		// event.preventDefault();
 		console.log(event.target[1].value, event.target[0].value);
-		axios.post('/api/suggestions', {
+		axios.post(`${process.env.baseURL}/api/suggestions`, {
 			name       : event.target[2].value,
 			difficulty : event.target[1].value,
 			suggestion : event.target[0].value
