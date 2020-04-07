@@ -59,7 +59,7 @@ export default function CreateBoardForm() {
 		}
 		let pieces = [];
 		axios
-			.get(`/api/suggestions/random/${numPieces}`)
+			.get(`${process.env.baseURL}/api/suggestions/random/${numPieces}`)
 			.then((data) => {
 				data.data.forEach((item) => pieces.push(item[0]._id));
 			})
@@ -68,7 +68,7 @@ export default function CreateBoardForm() {
 					alert('There was a problem creating the board. Please try again.');
 				} else {
 					axios
-						.post('/api/boards', {
+						.post(`${process.env.baseURL}/api/boards`, {
 							title  : state.title,
 							type   : typeName,
 							pieces : pieces

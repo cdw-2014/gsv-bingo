@@ -24,7 +24,7 @@ export default function GameBoard(props) {
 				let idsToString = '';
 				board.pieces.forEach((id) => (idsToString += id + ','));
 				idsToString = idsToString.substr(0, idsToString.length - 1);
-				axios.get(`/api/suggestions/many/${idsToString}`).then((data) => {
+				axios.get(`${process.env.baseURL}/api/suggestions/many/${idsToString}`).then((data) => {
 					const pieces = data.data;
 					const res = {
 						_id    : board._id,
