@@ -41,8 +41,8 @@ const navigationOptions = [
 		imageText   : 'Image Text',
 		options     : [
 			{ title: 'Submit a New Suggestion', link: '/suggestions/submit' },
-			{ title: 'View All Suggested Pieces', link: '/suggestions/view' },
-			{ title: 'Manage Your Suggestions', link: '/suggestions/manage' }
+			{ title: '[COMING SOON] View All Suggested Pieces', link: '/suggestions/view' },
+			{ title: '[COMING SOON] Manage Your Suggestions', link: '/suggestions/manage' }
 		]
 	},
 	{
@@ -53,7 +53,7 @@ const navigationOptions = [
 		options     : [
 			{ title: 'Create a New Board', link: '/boards/create' },
 			{ title: 'View All Boards', link: '/boards/view' },
-			{ title: 'Manage Your Boards', link: '/boards/manage' }
+			{ title: '[COMING SOON] Manage Your Boards', link: '/boards/manage' }
 		]
 	}
 ];
