@@ -25,7 +25,7 @@ mongoose
 	.catch((err) => console.error(err));
 
 if (process.env.NODE_ENV === 'production') {
-	app.use(express.static('../src/build'));
+	app.use(express.static(path.join(__dirname, '../src/build')));
 	app.get('*', (req, res) => {
 		res.sendFile(path.join(__dirname, 'src', 'build', 'index.html'));
 	});
