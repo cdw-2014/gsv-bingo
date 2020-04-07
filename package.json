@@ -20,7 +20,7 @@
 	},
 	"scripts": {
 		"start": "nodemon server/server.js",
-		"build": "cd src && npm run build",
+		"build": "react-scripts build",
 		"install-client": "cd src && npm install",
 		"heroku-postbuild": "npm run install-client && npm run build",
 		"test": "react-scripts test",
