@@ -18,6 +18,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/suggestions', suggestionRoutes);
 app.use('/api/boards', boardRoutes);
 
+app.use('/local/user', (req, res) => {
+	if (req.body == undefined) {
+		res.json(currentUser);
+	} else {
+		currentUser = req;
+	}
+});
+
 const uri = `mongodb+srv://cdw2014:${process.env.MONGO_PASSWORD}@cluster0-wx2lp.mongodb.net/test`;
 mongoose
 	.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })

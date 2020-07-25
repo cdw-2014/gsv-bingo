@@ -6,6 +6,7 @@ import Container from '@material-ui/core/Container';
 import Header from './Header';
 import MainFeaturedContent from './MainFeaturedContent';
 import HomeNavigationOption from './HomeNavigationOption';
+import { useStore } from '../reducers/store';
 
 const useStyles = makeStyles((theme) => ({
 	mainGrid : {
@@ -65,7 +66,6 @@ export default function Home() {
 		<React.Fragment>
 			<CssBaseline />
 			<Container maxWidth="lg">
-				{/* <Header title="Google Street View Bingo" sections={sections} /> */}
 				<main>
 					<MainFeaturedContent post={mainFeaturedContent} />
 					<Grid container spacing={4}>
