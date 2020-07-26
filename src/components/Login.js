@@ -1,13 +1,9 @@
 import React, { useContext } from 'react';
-// import { useStore } from '../reducers/store';
-// import { UPDATE_USER } from '../reducers/actions';
 import { Stitch, GoogleRedirectCredential } from 'mongodb-stitch-browser-sdk';
 import { AuthContext } from '../AuthContext';
 import { Button, Tooltip } from '@material-ui/core';
 
 export default function Login() {
-	// const { currentUser, dispatch } = useStore();
-	// const { name } = currentUser;
 	const authContext = useContext(AuthContext);
 	const [
 		currentUser,

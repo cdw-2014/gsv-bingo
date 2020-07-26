@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+import About from './About';
 
 const useStyles = makeStyles((theme) => ({
 	toolbar          : {
@@ -47,7 +48,9 @@ export default function Header(props) {
 	return (
 		<React.Fragment>
 			<Toolbar className={classes.toolbar}>
-				<Button size="small">About</Button>
+				<Button onClick={() => (window.location.href = '/about')} size="small">
+					About
+				</Button>
 				<Typography
 					component="h2"
 					variant="h5"

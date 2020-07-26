@@ -7,6 +7,7 @@ import Header from './components/Header';
 import CreateBoardForm from './components/CreateBoardForm';
 import GameBoard from './components/GameBoard';
 import Login from './components/Login';
+import About from './components/About';
 import { AuthContext } from './AuthContext';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -75,6 +76,7 @@ function App() {
 						/>
 						<Route path="/boards/play/:gameId" render={(props) => <GameBoard {...props} user={user} />} />
 						<Route path="/login" component={Login} />
+						<Route exact path="/about" render={(props) => <About {...props} user={user} />} />
 					</AuthContext.Provider>
 				</Switch>
 			</Router>
