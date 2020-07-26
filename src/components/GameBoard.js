@@ -18,13 +18,13 @@ export default function GameBoard(props) {
 
 	React.useEffect(() => {
 		axios
-			.get(`${process.env.BASE_API_URL}/api/boards/${gameId}`)
+			.get(`http://localhost:3001/api/boards/${gameId}`)
 			.then((data) => data.data[0])
 			.then((board) => {
 				let idsToString = '';
 				board.pieces.forEach((id) => (idsToString += id + ','));
 				idsToString = idsToString.substr(0, idsToString.length - 1);
-				axios.get(`${process.env.BASE_API_URL}/api/suggestions/many/${idsToString}`).then((data) => {
+				axios.get(`http://localhost:3001/api/suggestions/many/${idsToString}`).then((data) => {
 					const pieces = data.data;
 					const res = {
 						_id    : board._id,

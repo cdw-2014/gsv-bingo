@@ -22,7 +22,6 @@ router.get('/random/:num', async (req, res) => {
 		indices = indices.filter((x) => x !== index);
 		items.push(await getAtIndex(index));
 	}
-	console.log(items);
 	res.json(items);
 });
 
@@ -36,13 +35,11 @@ router.get('/many/:ids', (req, res) => {
 	let { ids } = req.params;
 	let checkList = ids.split(',');
 	Suggestion.find({ _id: { $in: checkList } }).then((suggestions) => {
-		console.log(suggestions);
 		res.json(suggestions);
 	});
 });
 
 router.post('/', (req, res) => {
-	console.log('SENT');
 	let { name, suggestion, difficulty, email } = req.body;
 	Suggestion.create({
 		name       : name,

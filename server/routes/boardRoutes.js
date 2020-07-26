@@ -14,12 +14,13 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	let { title, type, pieces } = req.body;
+	let { title, type, pieces, email } = req.body;
 	let b = Board.create(
 		{
 			title  : title,
 			type   : type,
-			pieces : pieces
+			pieces : pieces,
+			email  : email
 		},
 		(err, item) => {
 			res.send(item._id);
