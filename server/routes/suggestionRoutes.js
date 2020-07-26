@@ -42,14 +42,15 @@ router.get('/many/:ids', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	let { name, suggestion, difficulty } = req.body;
+	console.log('SENT');
+	let { name, suggestion, difficulty, email } = req.body;
 	Suggestion.create({
 		name       : name,
 		suggestion : suggestion,
 		type       : 'GSV',
 		difficulty : difficulty,
 		isApproved : false,
-		createdAt  : new Date()
+		email      : email
 	});
 });
 

@@ -66,7 +66,7 @@ function App() {
 						<Route exact path="/" component={Home} />
 						<Route
 							exact
-							path="/suggestions/submit"
+							path="/suggestions/submit/*"
 							render={(props) => <SuggestionForm {...props} user={user} />}
 						/>
 						<Route
