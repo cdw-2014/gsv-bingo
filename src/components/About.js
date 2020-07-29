@@ -34,7 +34,7 @@ export default function About(props) {
 						<p>
 							The board pieces are 100% crowdsourced by the users of this website. While I will
 							occasionally add suggestions from the YouTube comment sections manually to the database, you
-							can submit your own by clicking "Submit a New Suggesiton" from the Suggestions dropdown on
+							can submit your own by clicking "Submit a New Suggestion" from the Suggestions dropdown on
 							the homepage! Likewise, to create a board, click the "Create a New Board" option from the
 							Game Board dropdown on the homepage.
 						</p>

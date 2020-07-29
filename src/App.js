@@ -6,23 +6,23 @@ import SuggestionForm from './components/SuggestionForm';
 import Header from './components/Header';
 import CreateBoardForm from './components/CreateBoardForm';
 import GameBoard from './components/GameBoard';
+import ViewMyBoards from './components/ViewMyBoards';
 import Login from './components/Login';
 import About from './components/About';
+import Rules from './components/Rules';
+import ContactMe from './components/ContactMe';
+import FeedbackForm from './components/FeedbackForm';
 import { AuthContext } from './AuthContext';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 
 const sections = [
-	// { title: '1', url: '#' },
-	// { title: '2', url: '#' },
-	// { title: '3', url: '#' },
-	// { title: '4', url: '#' },
-	// { title: '5', url: '#' },
-	// { title: '6', url: '#' },
-	// { title: '7', url: '#' },
-	// { title: '8', url: '#' },
-	// { title: '9', url: '#' },
-	// { title: '0', url: '#' }
+	{ title: 'About GSV Bingo', url: '/about' },
+	{ title: 'Rules and Guidelines', url: '/rules' },
+	{ title: 'Contact Me', url: '/contact-me' },
+	{ title: 'Suggestion/Feedback Form', url: '/feedback' },
+	{ title: 'Random Street View (Inspiration)', url: 'https://www.mapcrunch.com' },
+	{ title: 'Buy Me A Coffee', url: 'https://www.paypal.com/paypalme/cdw2014' }
 ];
 
 function Alert(props) {
@@ -66,7 +66,7 @@ function App() {
 						<Route exact path="/" component={Home} />
 						<Route
 							exact
-							path="/suggestions/submit/*"
+							path="/suggestions/submit*"
 							render={(props) => <SuggestionForm {...props} user={user} />}
 						/>
 						<Route
@@ -75,8 +75,12 @@ function App() {
 							render={(props) => <CreateBoardForm {...props} user={user} />}
 						/>
 						<Route path="/boards/play/:gameId" render={(props) => <GameBoard {...props} user={user} />} />
+						<Route path="/boards/view" render={(props) => <ViewMyBoards {...props} user={user} />} />
 						<Route path="/login" component={Login} />
 						<Route exact path="/about" render={(props) => <About {...props} user={user} />} />
+						<Route exact path="/rules" render={(props) => <Rules {...props} user={user} />} />
+						<Route exact path="/contact-me" render={(props) => <ContactMe {...props} user={user} />} />
+						<Route exact path="/feedback" render={(props) => <FeedbackForm {...props} user={user} />} />
 					</AuthContext.Provider>
 				</Switch>
 			</Router>

@@ -51,13 +51,14 @@ router.post('/', (req, res) => {
 	});
 });
 
-router.put('/id=:id&isApproved=isApproved', (req, res) => {
+router.put('/id=:id&vote=vote', (req, res) => {
 	const id = req.params.id;
+	const vote = parseInt(req.params.vote);
 	Suggestion.updateOne(
 		{ _id: id },
 		{
-			$set : {
-				isApproved : req.params.isApproved
+			$inc : {
+				score : req.params.vote
 			}
 		}
 	).catch((err) => console.error(err));
