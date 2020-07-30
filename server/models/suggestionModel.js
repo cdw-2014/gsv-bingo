@@ -7,7 +7,7 @@ var suggestionSchema = new Schema({
 	suggestion : { type: String, required: true },
 	type       : { type: String, required: true },
 	difficulty : { type: String, required: true },
-	score      : { type: Number, required: true },
+	votes      : { type: Schema.Types.Mixed, required: true },
 	email      : { type: String, required: false }
 });
 

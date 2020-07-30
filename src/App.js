@@ -15,6 +15,7 @@ import FeedbackForm from './components/FeedbackForm';
 import { AuthContext } from './AuthContext';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+import ViewAllSuggestions from './components/ViewAllSuggestions';
 
 const sections = [
 	{ title: 'About GSV Bingo', url: '/about' },
@@ -76,6 +77,10 @@ function App() {
 						/>
 						<Route path="/boards/play/:gameId" render={(props) => <GameBoard {...props} user={user} />} />
 						<Route path="/boards/view" render={(props) => <ViewMyBoards {...props} user={user} />} />
+						<Route
+							path="/suggestions/view/all"
+							render={(props) => <ViewAllSuggestions {...props} user={user} />}
+						/>
 						<Route path="/login" component={Login} />
 						<Route exact path="/about" render={(props) => <About {...props} user={user} />} />
 						<Route exact path="/rules" render={(props) => <Rules {...props} user={user} />} />

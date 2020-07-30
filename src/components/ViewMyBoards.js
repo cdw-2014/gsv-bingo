@@ -57,11 +57,6 @@ export default function ViewMyBoards(props) {
 			.then(() => setLoading(false));
 	}, []);
 
-	const redirect = (id) => {
-		window.location.href = `/board/play/${id}`;
-		return false;
-	};
-
 	const handleStar = (id, star, index) => {
 		let items = [
 			...boards

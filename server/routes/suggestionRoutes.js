@@ -2,8 +2,16 @@ const router = require('express').Router();
 const Suggestion = require('../models/suggestionModel');
 
 router.get('/', (req, res) => {
-	Suggestion.find().then((suggestions) => {
+	Suggestion.find({ score: { $gt: -5 } }).then((suggestions) => {
 		res.json(suggestions);
+	});
+});
+
+router.get('/page=:page&num=:num', async (req, res) => {
+	let { page, num } = req.params;
+	page = Math.max(1, page);
+	Suggestion.find().limit(parseInt(num)).skip(num * (page - 1)).sort({ _id: 1 }).exec().then(async (suggestions) => {
+		res.json({ suggestions, maxPages: Math.ceil((await Suggestion.countDocuments()) / num) });
 	});
 });
 
@@ -51,14 +59,24 @@ router.post('/', (req, res) => {
 	});
 });
 
-router.put('/id=:id&vote=vote', (req, res) => {
+const votesFromString = (str) => {
+	let data = str.split('--delim--');
+	let votes = [];
+	data.forEach((v) => {
+		const voteData = v.split(',');
+		votes.push({ email: voteData[0], score: parseInt(voteData[1]) });
+	});
+	return votes;
+};
+
+router.put('/id=:id&votes=:votes', (req, res) => {
 	const id = req.params.id;
-	const vote = parseInt(req.params.vote);
+	const votes = votesFromString(req.params.votes);
 	Suggestion.updateOne(
 		{ _id: id },
 		{
-			$inc : {
-				score : req.params.vote
+			$set : {
+				votes : votes
 			}
 		}
 	).catch((err) => console.error(err));
