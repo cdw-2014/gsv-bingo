@@ -16,8 +16,8 @@ export default function Rules(props) {
 						</p>
 						<ol>
 							<li>
-								Avoid offensive words and phrases. This includes any racist slurs, homophobia,
-								transphobia, or any other bigotry.
+								Avoid offensive words and phrases. This includes any racism, homophobia, transphobia, or
+								any other bigotry.
 							</li>
 							<li>
 								While not explicitly encouraged, light swearing is allowed in suggestions. This website
@@ -39,7 +39,26 @@ export default function Rules(props) {
 								Double check your spelling and grammar before submitting. Also, try to keep the
 								suggestions concise so that they will fit on the bingo pieces (less than 15 words).
 							</li>
+							<li>
+								Before adding suggestions, consider browsing through the existing suggestions to see if
+								your ideas are already in the database. If you want to avoid spoilers, you do not need
+								to do this, but users may report duplicate suggestions which may be deleted.
+							</li>
 						</ol>
+					</Grid>
+					<Grid>
+						<h3>Reporting a Suggestion</h3>
+						<p>
+							When viewing all suggestions, feel free to downvote and upvote suggestions as you deem fit.
+							If a suggestion's score goes below a certain threshold, it feel be removed. Any suggestion
+							that does not adhere to the suggestion etiquette above is fair game for downvoting. However,
+							only use the Report button for the following reasons:
+						</p>
+						<ul>
+							<li>Suggestion is racist, homophobic, transphobic, etc.</li>
+							<li>Suggestion is extremely vulgar and makes you feel uncomfortable using the website.</li>
+							<li>Suggestion is a duplicate.</li>
+						</ul>
 					</Grid>
 					<Grid>
 						<h3>General Guidelines</h3>
@@ -51,14 +70,15 @@ export default function Rules(props) {
 								may linger in local storage even after you log out.
 							</li>
 							<li>
-								When voting on other people's suggestions, please don't downvote without good reason. As
-								mentioned before, the score of a suggestion will determine whether it is deleted, so
-								only downvote if the suggestion does not follow the guidelines above.
-							</li>
-							<li>
 								Don't abuse the suggestion/feedback form. If you found a bug, have any suggestions on
 								how to improve the website, or have any general feedback that you would like to share,
 								please do. However, the form sends an email so try not to spam my inbox :)
+							</li>
+							<li>
+								If you enjoy the website, consider contributing by leaving your own suggestions! There
+								are over a thousand unique boards so far, but far fewer suggestions. To keep the website
+								enjoyable for yourself and others, leave a suggestion or two every time you play a round
+								of bingo!
 							</li>
 						</ol>
 					</Grid>

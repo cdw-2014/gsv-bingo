@@ -12,7 +12,13 @@ import {
 	Typography,
 	CardContent,
 	CardActions,
-	IconButton
+	IconButton,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogContentText,
+	DialogActions,
+	MenuItem
 } from '@material-ui/core';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -58,6 +64,14 @@ export default function ViewAllSuggestions(props) {
 		isReported,
 		setReported
 	] = React.useState(false);
+	const [
+		reporting,
+		setReporting
+	] = React.useState({});
+	const [
+		reason,
+		setReason
+	] = React.useState(null);
 
 	React.useEffect(
 		() => {
@@ -87,6 +101,9 @@ export default function ViewAllSuggestions(props) {
 	);
 
 	const handleVote = (id, vote, index) => {
+		if (user.email === null) {
+			return;
+		}
 		let items = [
 			...userVotes
 		];
@@ -208,7 +225,7 @@ export default function ViewAllSuggestions(props) {
 									<Typography variant="body1" gutterBottom>
 										{suggestion.suggestion}
 									</Typography>
-									<Typography variant="body2" color="textSecondary" gutterBottom>
+									<Typography noWrap variant="body2" color="textSecondary" gutterBottom>
 										By {suggestion.name ? suggestion.name : 'Anonymous'}
 									</Typography>
 									<Typography variant="body2" color="textSecondary" gutterBottom>
@@ -216,10 +233,17 @@ export default function ViewAllSuggestions(props) {
 									</Typography>
 								</CardContent>
 								<CardActions>
-									<Button variant="outlined" color="secondary" onClick={() => {}}>
+									<Button
+										disabled={!user.email}
+										variant="outlined"
+										size="small"
+										color="secondary"
+										onClick={() => setReporting(suggestion)}
+									>
 										Report
 									</Button>
 									<IconButton
+										disabled={!user.email}
 										onClick={() => handleVote(suggestion._id, 1, i)}
 										color={getVoteColor(i, 1)}
 									>
@@ -227,6 +251,7 @@ export default function ViewAllSuggestions(props) {
 									</IconButton>
 									{getScore(suggestion.votes)}
 									<IconButton
+										disabled={!user.email}
 										onClick={() => handleVote(suggestion._id, -1, i)}
 										color={getVoteColor(i, -1)}
 									>
@@ -247,10 +272,81 @@ export default function ViewAllSuggestions(props) {
 			<Grid container spacing={1} justify="center" style={{ marginTop: '30px' }}>
 				{suggestions.length !== 0 ? renderSuggestions() : <div>Loading...</div>}
 			</Grid>
+			<Dialog title="report-modal" open={reporting.suggestion} modal={true}>
+				<DialogTitle>Reporting a Suggestion</DialogTitle>
+				<DialogContent>
+					<Card style={{ backgroundColor: '#f3b6a8' }} variant="outlined">
+						<CardContent style={{ height: '8ch' }}>
+							<Typography variant="body1" gutterBottom>
+								{reporting.suggestion}
+							</Typography>
+							<Typography noWrap variant="body2" color="textSecondary" gutterBottom>
+								By {reporting.name ? reporting.name : 'Anonymous'}
+							</Typography>
+							<Typography variant="body2" color="textSecondary" gutterBottom>
+								Difficulty: {reporting.difficulty}
+							</Typography>
+						</CardContent>
+					</Card>
+					<Typography gutterBottom>Select a reason for reporting the above suggestion:</Typography>
+					<form
+						autoComplete="off"
+						onSubmit={(e) => {
+							e.preventDefault();
+							axios.post(`http://localhost:3001/api/mail`, {
+								subject : `[Report] GSV-Bingo Report`,
+								text    : `Suggestion:\n${reporting.suggestion}\n\nBy: ${reporting.name}\n\nDifficulty: ${reporting.difficulty}\n\nReporter: ${user.name} - ${user.email}\nReason:${reason}`
+							});
+							setReporting({});
+							setReported(true);
+						}}
+					>
+						<TextField
+							id="select-type"
+							select
+							required
+							fullWidth
+							value={reason}
+							helperText="Report Reason"
+							onChange={(event) => setReason(event.target.value)}
+						>
+							{[
+								{ text: 'Racism or Other Bigotry', id: 0 },
+								{ text: 'Vulgar Language', id: 1 },
+								{ text: 'Duplicate Suggestion', id: 2 }
+							].map((option) => (
+								<MenuItem key={option.id} value={option.text}>
+									{option.text}
+								</MenuItem>
+							))}
+						</TextField>
+						<Button type="submit" color="secondary">
+							Report
+						</Button>
+						<Button onClick={() => setReporting({})} color="primary" autoFocus>
+							Cancel
+						</Button>
+					</form>
+				</DialogContent>
+				{/* <DialogActions>
+					<Button
+						type="submit"
+						onClick={() => {
+							setReporting({});
+							setReported(true);
+						}}
+						color="secondary"
+					>
+						Report
+					</Button>
+					<Button onClick={() => setReporting({})} color="primary" autoFocus>
+						Cancel
+					</Button>
+				</DialogActions> */}
+			</Dialog>
 			<Snackbar open={isReported} autoHideDuration={5000} onClose={() => setReported(false)}>
-				<Alert onClose={() => setReported(false)} severity="warning">
-					Thank you for helping make the site clean! As a reminder, please read the rules before reporting
-					suggestions.
+				<Alert onClose={() => setReported(false)} severity="success">
+					Thank you for helping keep the site clean!
 				</Alert>
 			</Snackbar>
 		</div>

@@ -92,8 +92,8 @@ function App() {
 			{user.isAnon ? (
 				<Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
 					<Alert onClose={handleClose} severity="warning">
-						You are not signed in with Google! Your boards and suggestions will not be saved to your
-						account!
+						You are not signed in with Google! Your data will not be saved to your account, and you cannot
+						vote or report suggestions!
 					</Alert>
 				</Snackbar>
 			) : null}

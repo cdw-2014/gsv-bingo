@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 router.get('/page=:page&num=:num', async (req, res) => {
 	let { page, num } = req.params;
 	page = Math.max(1, page);
-	Suggestion.find().limit(parseInt(num)).skip(num * (page - 1)).sort({ _id: 1 }).exec().then(async (suggestions) => {
+	Suggestion.find().limit(parseInt(num)).skip(num * (page - 1)).sort({ _id: -1 }).exec().then(async (suggestions) => {
 		res.json({ suggestions, maxPages: Math.ceil((await Suggestion.countDocuments()) / num) });
 	});
 });

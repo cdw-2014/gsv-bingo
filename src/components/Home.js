@@ -40,8 +40,8 @@ const navigationOptions = [
 		imageText   : 'Image Text',
 		options     : [
 			{ title: 'Submit a New Suggestion', link: '/suggestions/submit' },
-			{ title: 'View All Suggested Pieces', link: '/suggestions/view/all' },
-			{ title: 'Manage My Suggestions', link: '/suggestions/view' }
+			{ title: 'View All Suggested Pieces', link: '/suggestions/view/all' }
+			// { title: 'Manage My Suggestions', link: '/suggestions/view' }
 		]
 	},
 	{

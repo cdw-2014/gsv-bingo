@@ -70,6 +70,7 @@ export default function Login() {
 	const renderNotLoggedIn = () => (
 		<React.Fragment>
 			<h3>You are not logged in! Please authenticate with Google to play Google Street View Bingo.</h3>
+			<p>DO NOT LOG IN IF YOU ARE ON A PUBLIC COMPUTER!</p>
 			<Button onClick={() => handleClick('login')}>Log In</Button>
 			<Tooltip title="Skipping login will let you use the site anonymously, but your boards will not be saved!">
 				<Button onClick={() => handleClick('skip')}>No Thanks</Button>

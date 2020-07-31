@@ -39,16 +39,21 @@ export default function SuggestionForm(props) {
 	};
 
 	const handleChange = (event) => {
+		console.log(event.target);
 		setType(event.target.value);
 	};
 
-	/*TODO: Check DB for exact copy/similar suggestions
-          Check suggestion for inappropriate language
-  */
 	const handleSubmit = (event) => {
+		axios.post(`http://localhost:3001/api/mail`, {
+			subject : `[${type}] GSV-Bingo Feedback`,
+			text    : `${event.target[2].value}\n\nFrom:${event.target[4].value}\n${event.target[5].value}`
+		});
 		event.preventDefault();
 		event.target[0].value = '';
-		setType('General Feedback');
+		event.target[1].value = '';
+		event.target[2].value = '';
+		event.target[3].value = '';
+		setType('Unknown');
 		setDidSubmit(true);
 	};
 
@@ -89,7 +94,7 @@ export default function SuggestionForm(props) {
 									{ text: 'Report a Bug', id: 2 },
 									{ text: 'Style/Design Suggestion', id: 3 }
 								].map((option) => (
-									<MenuItem key={option.id} value={option.id}>
+									<MenuItem key={option.id} value={option.text}>
 										{option.text}
 									</MenuItem>
 								))}
