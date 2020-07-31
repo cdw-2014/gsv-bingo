@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import Header from './Header';
 import MainFeaturedContent from './MainFeaturedContent';
 import HomeNavigationOption from './HomeNavigationOption';
 
@@ -41,8 +40,8 @@ const navigationOptions = [
 		imageText   : 'Image Text',
 		options     : [
 			{ title: 'Submit a New Suggestion', link: '/suggestions/submit' },
-			{ title: '[COMING SOON] View All Suggested Pieces', link: '/' },
-			{ title: '[COMING SOON] Manage Your Suggestions', link: '/' }
+			{ title: 'View All Suggested Pieces', link: '/suggestions/view/all' }
+			// { title: 'Manage My Suggestions', link: '/suggestions/view' }
 		]
 	},
 	{
@@ -52,8 +51,7 @@ const navigationOptions = [
 		imageText   : 'Image Text',
 		options     : [
 			{ title: 'Create a New Board', link: '/boards/create' },
-			{ title: '[COMING SOON] View All Boards', link: '/' },
-			{ title: '[COMING SOON] Manage Your Boards', link: '/' }
+			{ title: 'Manage Past Boards', link: '/boards/view' }
 		]
 	}
 ];
@@ -65,7 +63,6 @@ export default function Home() {
 		<React.Fragment>
 			<CssBaseline />
 			<Container maxWidth="lg">
-				{/* <Header title="Google Street View Bingo" sections={sections} /> */}
 				<main>
 					<MainFeaturedContent post={mainFeaturedContent} />
 					<Grid container spacing={4}>

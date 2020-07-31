@@ -3,13 +3,15 @@ import { TextField, Grid, Button, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+import { TextareaAutosize } from '@material-ui/core';
 const axios = require('axios');
 
 const useStyles = makeStyles((theme) => ({
 	root : {
 		'& .MuiTextField-root' : {
-			margin : theme.spacing(1),
-			width  : '25ch'
+			margin   : theme.spacing(1),
+			width    : '25ch',
+			flexGrow : 1
 		}
 	}
 }));
@@ -21,8 +23,8 @@ function Alert(props) {
 export default function SuggestionForm(props) {
 	const classes = useStyles();
 	const [
-		amount,
-		setAmount
+		type,
+		setType
 	] = React.useState('Unknown');
 	const [
 		didSubmit,
@@ -37,22 +39,21 @@ export default function SuggestionForm(props) {
 	};
 
 	const handleChange = (event) => {
-		setAmount(event.target.value);
+		console.log(event.target);
+		setType(event.target.value);
 	};
 
-	/*TODO: Check DB for exact copy/similar suggestions
-          Check suggestion for inappropriate language
-  */
 	const handleSubmit = (event) => {
-		event.preventDefault();
-		axios.post(`http://gsv-bingo.herokuapp.com/api/suggestions`, {
-			name       : event.target[2].value,
-			difficulty : event.target[1].value,
-			suggestion : event.target[0].value,
-			email      : props.user.email
+		axios.post(`http://gsv-bingo.herokuapp.com/api/mail`, {
+			subject : `[${type}] GSV-Bingo Feedback`,
+			text    : `${event.target[2].value}\n\nFrom:${event.target[4].value}\n${event.target[5].value}`
 		});
+		event.preventDefault();
 		event.target[0].value = '';
-		setAmount('Unknown');
+		event.target[1].value = '';
+		event.target[2].value = '';
+		event.target[3].value = '';
+		setType('Unknown');
 		setDidSubmit(true);
 	};
 
@@ -65,41 +66,50 @@ export default function SuggestionForm(props) {
 			spacing={2}
 			style={{ marginTop: '15px' }}
 		>
-			<Grid item xs={8}>
-				<h3>Add a Bingo Piece</h3>
+			<Grid item xs={4}>
+				<h3>Give Feedback</h3>
 				<p>
-					Fill out the form to create a possible bingo piece that others can look for when playing Google
-					Steet View Bingo!
+					Fill out the form to give feedback or suggestions for this website. You may report bugs, request new
+					features, or just give any general feedback on the website. If you would like a follow up on your
+					feedback, please enter an email address.
 				</p>
 			</Grid>
 			<form className={classes.root} autoComplete="off" onSubmit={(e) => handleSubmit(e)}>
 				<div>
 					<Grid container alignItems="center" justify="center" direction="column" spacing={3}>
 						<Grid item>
-							<TextField required id="suggestion" label="Required" placeholder="Suggestion" />
+							<TextField required id="subject" label="Required" placeholder="Subject" />
 						</Grid>
 						<Grid item>
 							<TextField
-								id="select-amount"
+								id="select-type"
 								select
-								value={amount}
-								helperText="About how long will it take to find?"
+								value={type}
+								helperText="Type of feedback"
 								onChange={handleChange}
 							>
 								{[
-									{ text: 'Unknown', id: 0 },
-									{ text: 'Easy (1-2 minutes)', id: 1 },
-									{ text: 'Fair (3-5 minutes)', id: 2 },
-									{ text: 'Hard (Over 5 minutes)', id: 3 }
+									{ text: 'General Feedback', id: 0 },
+									{ text: 'Feature Request', id: 1 },
+									{ text: 'Report a Bug', id: 2 },
+									{ text: 'Style/Design Suggestion', id: 3 }
 								].map((option) => (
-									<MenuItem key={option.id} value={option.id}>
+									<MenuItem key={option.id} value={option.text}>
 										{option.text}
 									</MenuItem>
 								))}
 							</TextField>
 						</Grid>
+						<TextareaAutosize
+							aria-label="empty textarea"
+							placeholder="Enter feedback here..."
+							style={{ width: '100%' }}
+						/>
 						<Grid item>
-							<TextField id="name" label="Display Name" />
+							<TextField id="name" label="Your Name" />
+						</Grid>
+						<Grid item>
+							<TextField id="email" label="Email Address" />
 						</Grid>
 						<Grid item>
 							<Button variant="contained" type="submit" color="primary" id="submit">
@@ -109,9 +119,10 @@ export default function SuggestionForm(props) {
 					</Grid>
 				</div>
 			</form>
+
 			<Snackbar open={didSubmit} autoHideDuration={5000} onClose={handleClose}>
 				<Alert onClose={handleClose} severity="success">
-					Suggestion was successfully submitted!
+					Feedback was successfully submitted! Please allow up to 24 hours for a reply!
 				</Alert>
 			</Snackbar>
 		</Grid>
