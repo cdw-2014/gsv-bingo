@@ -45,7 +45,7 @@ export default function SuggestionForm(props) {
   */
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		axios.post(`http://gsv-bingo.herokuapp.com/api/suggestions`, {
+		axios.post(`https://gsv-bingo.herokuapp.com/api/suggestions`, {
 			name       : event.target[2].value,
 			difficulty : event.target[1].value,
 			suggestion : event.target[0].value,

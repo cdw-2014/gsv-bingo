@@ -51,11 +51,7 @@ export default function ViewMyBoards(props) {
 
 	React.useEffect(() => {
 		axios
-<<<<<<< HEAD
 			.get(`https://gsv-bingo.herokuapp.com/api/boards/user/${props.user.email}`)
-=======
-			.get(`http://gsv-bingo.herokuapp.com/api/boards/user/${props.user.email}`)
->>>>>>> 6107915a8c1e249f93bc5b3f5b334c5657220cbb
 			.then((data) => data.data)
 			.then((fetchedBoards) => setBoards(fetchedBoards))
 			.then(() => setLoading(false));
@@ -68,19 +64,11 @@ export default function ViewMyBoards(props) {
 		let item = { ...boards[index], starred: !star };
 		items[index] = item;
 		setBoards(items);
-<<<<<<< HEAD
 		axios.put(`https://gsv-bingo.herokuapp.com/api/boards/id=${id}&star=${!star}`);
 	};
 
 	const copyUrl = (id) => {
 		navigator.clipboard.writeText(`https://gsv-bingo.herokuapp.com/boards/play/${id}`).then(() => setCopied(true));
-=======
-		axios.put(`http://gsv-bingo.herokuapp.com/api/boards/id=${id}&star=${!star}`);
-	};
-
-	const copyUrl = (id) => {
-		navigator.clipboard.writeText(`http://gsv-bingo.herokuapp.com/boards/play/${id}`).then(() => setCopied(true));
->>>>>>> 6107915a8c1e249f93bc5b3f5b334c5657220cbb
 	};
 
 	const getTypeString = (type) => {
