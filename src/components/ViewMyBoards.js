@@ -51,7 +51,7 @@ export default function ViewMyBoards(props) {
 
 	React.useEffect(() => {
 		axios
-			.get(`http://localhost:3001/api/boards/user/${props.user.email}`)
+			.get(`http://gsv-bingo.herokuapp.com/api/boards/user/${props.user.email}`)
 			.then((data) => data.data)
 			.then((fetchedBoards) => setBoards(fetchedBoards))
 			.then(() => setLoading(false));
@@ -64,7 +64,7 @@ export default function ViewMyBoards(props) {
 		let item = { ...boards[index], starred: !star };
 		items[index] = item;
 		setBoards(items);
-		axios.put(`http://localhost:3001/api/boards/id=${id}&star=${!star}`);
+		axios.put(`http://gsv-bingo.herokuapp.com/api/boards/id=${id}&star=${!star}`);
 	};
 
 	const copyUrl = (id) => {

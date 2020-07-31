@@ -76,7 +76,7 @@ export default function ViewAllSuggestions(props) {
 	React.useEffect(
 		() => {
 			axios
-				.get(`http://localhost:3001/api/suggestions/page=${pageInfo.page}&num=32`)
+				.get(`http://gsv-bingo.herokuapp.com/api/suggestions/page=${pageInfo.page}&num=32`)
 				.then((data) => data.data)
 				.then((fetchedSuggestions) => {
 					console.log(fetchedSuggestions);
@@ -120,7 +120,7 @@ export default function ViewAllSuggestions(props) {
 		}
 		setUserVotes(items);
 		let newVotes = votesToString(suggestions[index].votes, items[index]);
-		axios.put(`http://localhost:3001/api/suggestions/id=${id}&votes=${newVotes}`);
+		axios.put(`http://gsv-bingo.herokuapp.com/api/suggestions/id=${id}&votes=${newVotes}`);
 	};
 
 	const votesToString = (votes, vote) => {
@@ -293,7 +293,7 @@ export default function ViewAllSuggestions(props) {
 						autoComplete="off"
 						onSubmit={(e) => {
 							e.preventDefault();
-							axios.post(`http://localhost:3001/api/mail`, {
+							axios.post(`http://gsv-bingo.herokuapp.com/api/mail`, {
 								subject : `[Report] GSV-Bingo Report`,
 								text    : `Suggestion:\n${reporting.suggestion}\n\nBy: ${reporting.name}\n\nDifficulty: ${reporting.difficulty}\n\nReporter: ${user.name} - ${user.email}\nReason:${reason}`
 							});
