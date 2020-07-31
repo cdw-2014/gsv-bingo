@@ -44,7 +44,11 @@ export default function SuggestionForm(props) {
 	};
 
 	const handleSubmit = (event) => {
+<<<<<<< HEAD
 		axios.post(`https://gsv-bingo.herokuapp.com/api/mail`, {
+=======
+		axios.post(`http://gsv-bingo.herokuapp.com/api/mail`, {
+>>>>>>> 6107915a8c1e249f93bc5b3f5b334c5657220cbb
 			subject : `[${type}] GSV-Bingo Feedback`,
 			text    : `${event.target[2].value}\n\nFrom:${event.target[4].value}\n${event.target[5].value}`
 		});

@@ -1,6 +1,8 @@
 import React from 'react';
 import { TextField, Grid, Button, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 const axios = require('axios');
 
 const useStyles = makeStyles((theme) => ({
@@ -12,12 +14,27 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-export default function SuggestionForm() {
+function Alert(props) {
+	return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+export default function SuggestionForm(props) {
 	const classes = useStyles();
 	const [
 		amount,
 		setAmount
 	] = React.useState('Unknown');
+	const [
+		didSubmit,
+		setDidSubmit
+	] = React.useState(false);
+
+	const handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setDidSubmit(false);
+	};
 
 	const handleChange = (event) => {
 		setAmount(event.target.value);
@@ -27,13 +44,16 @@ export default function SuggestionForm() {
           Check suggestion for inappropriate language
   */
 	const handleSubmit = (event) => {
-		// event.preventDefault();
-		console.log(event.target[1].value, event.target[0].value);
-		axios.post(`https://gsv-bingo.herokuapp.com/api/suggestions`, {
+		event.preventDefault();
+		axios.post(`http://gsv-bingo.herokuapp.com/api/suggestions`, {
 			name       : event.target[2].value,
 			difficulty : event.target[1].value,
-			suggestion : event.target[0].value
+			suggestion : event.target[0].value,
+			email      : props.user.email
 		});
+		event.target[0].value = '';
+		setAmount('Unknown');
+		setDidSubmit(true);
 	};
 
 	return (
@@ -79,7 +99,7 @@ export default function SuggestionForm() {
 							</TextField>
 						</Grid>
 						<Grid item>
-							<TextField id="name" label="Your Name" />
+							<TextField id="name" label="Display Name" />
 						</Grid>
 						<Grid item>
 							<Button variant="contained" type="submit" color="primary" id="submit">
@@ -89,6 +109,11 @@ export default function SuggestionForm() {
 					</Grid>
 				</div>
 			</form>
+			<Snackbar open={didSubmit} autoHideDuration={5000} onClose={handleClose}>
+				<Alert onClose={handleClose} severity="success">
+					Suggestion was successfully submitted!
+				</Alert>
+			</Snackbar>
 		</Grid>
 	);
 }

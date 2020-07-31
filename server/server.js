@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const suggestionRoutes = require('./routes/suggestionRoutes');
 const boardRoutes = require('./routes/boardRoutes.js');
+const nodemailer = require('nodemailer');
 
 require('dotenv').config();
 
@@ -17,6 +18,39 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/suggestions', suggestionRoutes);
 app.use('/api/boards', boardRoutes);
+
+app.use('/local/user', (req, res) => {
+	if (req.body == undefined) {
+		res.json(currentUser);
+	} else {
+		currentUser = req;
+	}
+});
+
+app.post('/api/mail/', (req, res) => {
+	const { subject, text } = req.body;
+	var transporter = nodemailer.createTransport({
+		host       : 'smtp.gmail.com',
+		port       : 587,
+		secure     : false,
+		requireTLS : true,
+		auth       : {
+			user : process.env.GMAIL,
+			pass : process.env.PASSWORD
+		}
+	});
+
+	transporter.sendMail({ from: 'cdw2014@gmail.com', to: 'cdw2014@gmail.com', subject: subject, text: text }, function(
+		error,
+		info
+	) {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log('Email sent: ' + info.response);
+		}
+	});
+});
 
 const uri = `mongodb+srv://cdw2014:${process.env.MONGO_PASSWORD}@cluster0-wx2lp.mongodb.net/test`;
 mongoose
