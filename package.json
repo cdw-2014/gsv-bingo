@@ -23,7 +23,7 @@
 		"react-scripts": "3.4.0"
 	},
 	"scripts": {
-		"start": "react-scripts start",
+		"start": "node server/server.js",
 		"build": "react-scripts build",
 		"install-client": "cd src && npm install",
 		"heroku-postbuild": "npm run install-client && npm run build",
