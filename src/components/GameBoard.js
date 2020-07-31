@@ -18,13 +18,13 @@ export default function GameBoard(props) {
 
 	React.useEffect(() => {
 		axios
-			.get(`https://gsv-bingo.herokuapp.com/api/boards/${gameId}`)
+			.get(`http://gsv-bingo.herokuapp.com/api/boards/${gameId}`)
 			.then((data) => data.data[0])
 			.then((board) => {
 				let idsToString = '';
 				board.pieces.forEach((id) => (idsToString += id + ','));
 				idsToString = idsToString.substr(0, idsToString.length - 1);
-				axios.get(`https://gsv-bingo.herokuapp.com/api/suggestions/many/${idsToString}`).then((data) => {
+				axios.get(`http://gsv-bingo.herokuapp.com/api/suggestions/many/${idsToString}`).then((data) => {
 					const pieces = data.data;
 					const res = {
 						_id    : board._id,

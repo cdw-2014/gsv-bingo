@@ -13,13 +13,20 @@ router.get('/:id', (req, res) => {
 	});
 });
 
+router.get('/user/:email', (req, res) => {
+	Board.find({ email: req.params.email }).then((boards) => {
+		res.json(boards);
+	});
+});
+
 router.post('/', (req, res) => {
-	let { title, type, pieces } = req.body;
+	let { title, type, pieces, email } = req.body;
 	let b = Board.create(
 		{
 			title  : title,
 			type   : type,
-			pieces : pieces
+			pieces : pieces,
+			email  : email
 		},
 		(err, item) => {
 			res.send(item._id);
@@ -27,13 +34,15 @@ router.post('/', (req, res) => {
 	);
 });
 
-router.put('/id=:id', (req, res) => {
+router.put('/id=:id&star=:star', (req, res) => {
 	const id = req.params.id;
+	const star = req.params.star === 'true' ? true : false;
+	console.log(star);
 	Board.updateOne(
 		{ _id: id },
 		{
 			$set : {
-				isApproved : req.params.isApproved
+				starred : star
 			}
 		}
 	).catch((err) => console.error(err));

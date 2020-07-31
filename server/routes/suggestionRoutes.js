@@ -2,8 +2,16 @@ const router = require('express').Router();
 const Suggestion = require('../models/suggestionModel');
 
 router.get('/', (req, res) => {
-	Suggestion.find().then((suggestions) => {
+	Suggestion.find({ score: { $gt: -5 } }).then((suggestions) => {
 		res.json(suggestions);
+	});
+});
+
+router.get('/page=:page&num=:num', async (req, res) => {
+	let { page, num } = req.params;
+	page = Math.max(1, page);
+	Suggestion.find().limit(parseInt(num)).skip(num * (page - 1)).sort({ _id: -1 }).exec().then(async (suggestions) => {
+		res.json({ suggestions, maxPages: Math.ceil((await Suggestion.countDocuments()) / num) });
 	});
 });
 
@@ -22,7 +30,6 @@ router.get('/random/:num', async (req, res) => {
 		indices = indices.filter((x) => x !== index);
 		items.push(await getAtIndex(index));
 	}
-	console.log(items);
 	res.json(items);
 });
 
@@ -36,30 +43,40 @@ router.get('/many/:ids', (req, res) => {
 	let { ids } = req.params;
 	let checkList = ids.split(',');
 	Suggestion.find({ _id: { $in: checkList } }).then((suggestions) => {
-		console.log(suggestions);
 		res.json(suggestions);
 	});
 });
 
 router.post('/', (req, res) => {
-	let { name, suggestion, difficulty } = req.body;
+	let { name, suggestion, difficulty, email } = req.body;
 	Suggestion.create({
 		name       : name,
 		suggestion : suggestion,
 		type       : 'GSV',
 		difficulty : difficulty,
 		isApproved : false,
-		createdAt  : new Date()
+		email      : email
 	});
 });
 
-router.put('/id=:id&isApproved=isApproved', (req, res) => {
+const votesFromString = (str) => {
+	let data = str.split('--delim--');
+	let votes = [];
+	data.forEach((v) => {
+		const voteData = v.split(',');
+		votes.push({ email: voteData[0], score: parseInt(voteData[1]) });
+	});
+	return votes;
+};
+
+router.put('/id=:id&votes=:votes', (req, res) => {
 	const id = req.params.id;
+	const votes = votesFromString(req.params.votes);
 	Suggestion.updateOne(
 		{ _id: id },
 		{
 			$set : {
-				isApproved : req.params.isApproved
+				votes : votes
 			}
 		}
 	).catch((err) => console.error(err));

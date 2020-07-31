@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-export default function CreateBoardForm() {
+export default function CreateBoardForm(props) {
 	const classes = useStyles();
 	const [
 		state,
@@ -59,7 +59,7 @@ export default function CreateBoardForm() {
 		}
 		let pieces = [];
 		axios
-			.get(`https://gsv-bingo.herokuapp.com/api/suggestions/random/${numPieces}`)
+			.get(`http://gsv-bingo.herokuapp.com/api/suggestions/random/${numPieces}`)
 			.then((data) => {
 				data.data.forEach((item) => pieces.push(item[0]._id));
 			})
@@ -68,10 +68,11 @@ export default function CreateBoardForm() {
 					alert('There was a problem creating the board. Please try again.');
 				} else {
 					axios
-						.post(`https://gsv-bingo.herokuapp.com/api/boards`, {
+						.post(`http://gsv-bingo.herokuapp.com/api/boards`, {
 							title  : state.title,
 							type   : typeName,
-							pieces : pieces
+							pieces : pieces,
+							email  : props.user.email
 						})
 						.then((data) => (window.location.href = `/boards/play/${data.data}`));
 				}
